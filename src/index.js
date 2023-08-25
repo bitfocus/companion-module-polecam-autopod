@@ -75,8 +75,7 @@ class PanasonicPTZInstance extends InstanceBase {
 		}
 	}
 	// When module gets deleted
-	async destroy() {
-	}
+	async destroy() {}
 
 	// Initalize module
 	async init(config) {

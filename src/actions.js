@@ -8,24 +8,42 @@ import got from 'got'
 // ########################
 const CHOICES_IRIS = []
 for (let i = 0; i < 100; ++i) {
-	CHOICES_IRIS.push({ id: ('0' + i.toString(10)).substr(-2, 2), label: 'Iris ' + i })
+	CHOICES_IRIS.push({
+		id: ('0' + i.toString(10)).substr(-2, 2),
+		label: 'Iris ' + i,
+	})
 }
 
 const CHOICES_PRESET = []
 for (let i = 0; i < 10; ++i) {
-	CHOICES_PRESET.push({ id: ('0' + i.toString(10)).substr(-2, 2), label: 'Preset ' + (i + 1) })
+	CHOICES_PRESET.push({
+		id: ('0' + i.toString(10)).substr(-2, 2),
+		label: 'Preset ' + (i + 1),
+	})
 }
 
 const CHOICES_SPEED = []
 for (let i = 0; i < 100; ++i) {
-	CHOICES_SPEED.push({ id: i.toString(10), label: i  + '% Speed' })
+	CHOICES_SPEED.push({ id: i.toString(10), label: i + '% Speed' })
 }
 
 const CHOICES_SHOW_MODE = [
 	{ id: '0', label: 'Stop show mode', value: '15' },
-	{ id: '1', label: 'Show Mode. 1/3 speed. 30 sec wait at top & bottom', value: '14' },
-	{ id: '2', label: 'Show Mode. 1/3 speed. 45 sec wait at top & bottom', value: '16' },
-	{ id: '3', label: 'Show Mode. 1/3 speed. 60 sec wait at top & bottom', value: '17' },
+	{
+		id: '1',
+		label: 'Show Mode. 1/3 speed. 30 sec wait at top & bottom',
+		value: '14',
+	},
+	{
+		id: '2',
+		label: 'Show Mode. 1/3 speed. 45 sec wait at top & bottom',
+		value: '16',
+	},
+	{
+		id: '3',
+		label: 'Show Mode. 1/3 speed. 60 sec wait at top & bottom',
+		value: '17',
+	},
 ]
 
 // ######################
@@ -220,7 +238,7 @@ export function getActionDefinitions(self) {
 				id: 'val',
 				default: CHOICES_SHOW_MODE[0].id,
 				choices: CHOICES_SHOW_MODE,
-			}
+			},
 		],
 		callback: async (action) => {
 			const val = CHOICES_SHOW_MODE.find((choice) => choice.id === action.options.val)
@@ -258,9 +276,9 @@ export function getActionDefinitions(self) {
 			},
 		],
 		callback: async (action) => {
-			let val = Math.round(4096 / 100 * parseInt(action.options.val, 10));
+			let val = Math.round((4096 / 100) * parseInt(action.options.val, 10))
 			if (val === 4096) {
-				val = 4095;
+				val = 4095
 			}
 
 			await sendPTZ(self, 'AXI' + ('00' + val.toString(16)).substr(-3).toUpperCase())

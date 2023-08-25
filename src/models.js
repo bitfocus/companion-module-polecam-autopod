@@ -1,8 +1,7 @@
-
 export const SERIES_SPECS = [
 	{
 		// Includes all Actions / Variabels / Feedbacks
-		id: "Panapod",
+		id: 'Panapod',
 		variables: {
 			version: false, // If a camera sends a package every minute with the firmware version (qSV3)
 			error: true, // Camera can return Error messages when actions fail (rER)
@@ -45,4 +44,4 @@ export const SERIES_SPECS = [
 			sdCard: false, // Has SD Card Recording Control (sdctrl?save=start or sdctrl?save=end)
 		},
 	},
-];
+]

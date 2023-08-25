@@ -4,7 +4,8 @@
 	"main": "src/index.js",
 	"type": "module",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier --write ."
 	},
 	"license": "MIT",
 	"repository": {
@@ -12,11 +13,12 @@
 		"url": "git+https://github.com/bitfocus/companion-module-panasonic-panapod.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.0.2",
+		"@companion-module/base": "~1.4",
 		"got": "^12.5.3"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^0.5.1",
+		"@companion-module/tools": "~1.4",
 		"prettier": "^3.0.2"
-	}
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json"
 }

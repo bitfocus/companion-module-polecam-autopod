@@ -54,5 +54,4 @@ export const c = {
 		{ id: 1, label: 'Speed 01 (Slow)' },
 		{ id: 0, label: 'Stop' },
 	],
-
 }

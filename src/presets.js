@@ -399,7 +399,6 @@ export function getPresetDefinitions(self) {
 	}
 
 	if (seriesActions.timePset) {
-
 		presets['recall-preset-time-high'] = {
 			type: 'button',
 			category: 'Recall Preset',
@@ -505,7 +504,6 @@ export function getPresetDefinitions(self) {
 			],
 			feedbacks: [],
 		}
-
 	}
 
 	presets['singleLeg'] = {

@@ -2,7 +2,6 @@
 
 This module can control the [Panasonic Panapod by Polecam](https://eu.connect.panasonic.com/dk/en/products/broadcast-proav/panapod)
 
-
 ## Actions
 
 The actions are separated into the following categories.
