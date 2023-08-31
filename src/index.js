@@ -10,34 +10,36 @@ import got from 'got'
 // #### Instance setup ####
 // ########################
 class PanasonicPTZInstance extends InstanceBase {
-	getCameraInformation() {
+	async getCameraInformation() {
 		if (this.config.host) {
 			const url = `http://${this.config.host}:${this.config.httpPort}/live/camdata.html`
 
-			got
-				.get(url)
-				.then((response) => {
-					if (response.body) {
-						const lines = response.body.split('\r\n') // Split Data in order to remove data before and after command
+			try {
+				const response = await got.get(url);
+				if (response.body) {
+					const lines = response.body.split('\r\n') // Split Data in order to remove data before and after command
 
-						for (let line of lines) {
-							// remove new line, carage return and so on.
-							const str = line.trim().split(':') // Split Commands and data
-							if (this.config.debug) {
-								this.log('info', 'Recived CMD: ' + String(str))
-							}
-							// Store Data
-							this.storeData(str)
+					for (let line of lines) {
+						// remove new line, carage return and so on.
+						const str = line.trim().split(':') // Split Commands and data
+						if (this.config.debug) {
+							this.log('info', 'Recived CMD: ' + String(str))
 						}
-
-						this.checkVariables()
-						this.checkFeedbacks()
+						// Store Data
+						this.storeData(str)
 					}
-				})
-				.catch((err) => {
-					this.log('error', 'Error from PTZ: ' + String(err))
-				})
+
+					this.checkVariables()
+					this.checkFeedbacks()
+
+					return true
+				}
+			} catch (err) {
+				this.log('error', 'Error from PTZ: ' + String(err))
+			}
 		}
+
+		return false;
 	}
 
 	storeData(str) {
@@ -82,7 +84,7 @@ class PanasonicPTZInstance extends InstanceBase {
 		this.config = config
 
 		this.data = {
-			debug: false,
+			debug: true,
 			model: 'Auto',
 			series: 'Auto',
 			name: 'N/A',
@@ -98,7 +100,16 @@ class PanasonicPTZInstance extends InstanceBase {
 		this.config.debug = this.config.debug || false
 
 		this.updateStatus(InstanceStatus.Connecting)
-		this.getCameraInformation()
+		this.getCameraInformation().then((result) => {
+			if (result) {
+				this.updateStatus(InstanceStatus.Ok)
+			} else {
+				this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+			}
+		}).catch((err) => {
+			this.log('error', "ERROR getting camera information", err)
+			this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+		});
 		this.init_actions() // export actions
 		this.init_presets()
 		this.init_variables()
@@ -111,8 +122,16 @@ class PanasonicPTZInstance extends InstanceBase {
 	async configUpdated(config) {
 		this.config = config
 		this.updateStatus(InstanceStatus.Connecting)
-		this.getCameraInformation()
-		this.init_tcp()
+		this.getCameraInformation().then((result) => {
+			if (result) {
+				this.updateStatus(InstanceStatus.Ok)
+			} else {
+				this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+			}
+		}).catch((err) => {
+			this.log('error', "ERROR getting camera information", err)
+			this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+		});
 		this.init_actions() // export actions
 		this.init_presets()
 		this.init_variables()

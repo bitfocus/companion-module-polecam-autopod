@@ -58,9 +58,7 @@ export async function sendPTZ(self, str) {
 		}
 
 		try {
-			const response = await got.get(url)
-
-			// console.log("Result from REST:" + result.data);
+			await got.get(url)
 		} catch (err) {
 			throw new Error(`Action failed: ${url}`)
 		}
@@ -138,7 +136,7 @@ export function getActionDefinitions(self) {
 				}
 
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariable('ptSpeedVar', self.ptSpeed)
+				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
 			},
 		}
 	}
@@ -154,7 +152,7 @@ export function getActionDefinitions(self) {
 					self.ptSpeedIndex--
 				}
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariable('ptSpeedVar', self.ptSpeed)
+				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
 			},
 		}
 	}
@@ -170,7 +168,7 @@ export function getActionDefinitions(self) {
 					self.ptSpeedIndex++
 				}
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariable('ptSpeedVar', self.ptSpeed)
+				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
 			},
 		}
 	}
