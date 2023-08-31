@@ -15,7 +15,7 @@ class PanasonicPTZInstance extends InstanceBase {
 			const url = `http://${this.config.host}:${this.config.httpPort}/live/camdata.html`
 
 			try {
-				const response = await got.get(url);
+				const response = await got.get(url)
 				if (response.body) {
 					const lines = response.body.split('\r\n') // Split Data in order to remove data before and after command
 
@@ -39,7 +39,7 @@ class PanasonicPTZInstance extends InstanceBase {
 			}
 		}
 
-		return false;
+		return false
 	}
 
 	storeData(str) {
@@ -100,16 +100,18 @@ class PanasonicPTZInstance extends InstanceBase {
 		this.config.debug = this.config.debug || false
 
 		this.updateStatus(InstanceStatus.Connecting)
-		this.getCameraInformation().then((result) => {
-			if (result) {
-				this.updateStatus(InstanceStatus.Ok)
-			} else {
+		this.getCameraInformation()
+			.then((result) => {
+				if (result) {
+					this.updateStatus(InstanceStatus.Ok)
+				} else {
+					this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+				}
+			})
+			.catch((err) => {
+				this.log('error', 'ERROR getting camera information', err)
 				this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
-			}
-		}).catch((err) => {
-			this.log('error', "ERROR getting camera information", err)
-			this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
-		});
+			})
 		this.init_actions() // export actions
 		this.init_presets()
 		this.init_variables()
@@ -122,16 +124,18 @@ class PanasonicPTZInstance extends InstanceBase {
 	async configUpdated(config) {
 		this.config = config
 		this.updateStatus(InstanceStatus.Connecting)
-		this.getCameraInformation().then((result) => {
-			if (result) {
-				this.updateStatus(InstanceStatus.Ok)
-			} else {
+		this.getCameraInformation()
+			.then((result) => {
+				if (result) {
+					this.updateStatus(InstanceStatus.Ok)
+				} else {
+					this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
+				}
+			})
+			.catch((err) => {
+				this.log('error', 'ERROR getting camera information', err)
 				this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
-			}
-		}).catch((err) => {
-			this.log('error', "ERROR getting camera information", err)
-			this.updateStatus(InstanceStatus.UnknownError, 'Error getting camera information')
-		});
+			})
 		this.init_actions() // export actions
 		this.init_presets()
 		this.init_variables()
