@@ -28,6 +28,10 @@ It's recommended to use the presets for ease of setup.
 - Calibrate
 - Stow legs
 
+## NOTE!
+
+If the module connects successfully, but the Panapod seems unresponsive to your commands, first check that you have run the Calibration command after the Panapod was turned on. If it does not respond to the Calibration command, you might have very old firmware on your Panapod. Please contact Panasonic for a firmware update.
+
 ## Other
 
 For additional actions, please raise a feature request on [GitHub](https://github.com/bitfocus/companion-module-panasonic-panapod/).

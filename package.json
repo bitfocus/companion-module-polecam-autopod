@@ -1,6 +1,6 @@
 {
 	"name": "panasonic-panapod",
-	"version": "2.0.3",
+	"version": "1.0.0",
 	"main": "src/index.js",
 	"type": "module",
 	"scripts": {
