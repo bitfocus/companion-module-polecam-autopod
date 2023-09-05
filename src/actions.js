@@ -241,7 +241,7 @@ export function getActionDefinitions(self) {
 		callback: async (action) => {
 			const val = CHOICES_SHOW_MODE.find((choice) => choice.id === action.options.val)
 			if (val) {
-				await sendPTZ(self, 'R' + val)
+				await sendPTZ(self, 'R' + val.value)
 			}
 		},
 	}
