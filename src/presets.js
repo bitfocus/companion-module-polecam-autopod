@@ -2,6 +2,7 @@ import { combineRgb } from '@companion-module/base'
 import { getAndUpdateSeries, ICONS } from './common.js'
 
 export function getPresetDefinitions(self) {
+	// @type {{[key: string]: CompanionButtonPresetDefinition}}
 	const presets = {}
 
 	const foregroundColor = combineRgb(255, 255, 255) // White
@@ -11,13 +12,13 @@ export function getPresetDefinitions(self) {
 	const seriesActions = SERIES.actions
 
 	// ##########################
-	// #### Up/Down Presets ####
+	// #### Up/Down/Left/Right Presets ####
 	// ##########################
 
 	if (seriesActions.panTilt) {
 		presets['pan-tilt-up'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'UP',
 			style: {
 				text: '',
@@ -37,7 +38,7 @@ export function getPresetDefinitions(self) {
 					],
 					up: [
 						{
-							actionId: 'stop',
+							actionId: 'stopud',
 							options: {},
 						},
 					],
@@ -48,7 +49,7 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-down'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'DOWN',
 			style: {
 				text: '',
@@ -68,7 +69,69 @@ export function getPresetDefinitions(self) {
 					],
 					up: [
 						{
-							actionId: 'stop',
+							actionId: 'stopud',
+							options: {},
+						},
+					],
+				},
+			],
+			feedbacks: [],
+		}
+
+		presets['pan-tilt-left'] = {
+			type: 'button',
+			category: 'Up/Down/Left/Right',
+			name: 'LEFT',
+			style: {
+				text: '',
+				png64: ICONS.ICON_LEFT,
+				pngalignment: 'center:center',
+				size: '18',
+				color: foregroundColor,
+				bgcolor: backgroundColor,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'left',
+							options: {},
+						},
+					],
+					up: [
+						{
+							actionId: 'stoplr',
+							options: {},
+						},
+					],
+				},
+			],
+			feedbacks: [],
+		}
+
+		presets['pan-tilt-right'] = {
+			type: 'button',
+			category: 'Up/Down/Left/Right',
+			name: 'RIGHT',
+			style: {
+				text: '',
+				png64: ICONS.ICON_RIGHT,
+				pngalignment: 'center:center',
+				size: '18',
+				color: foregroundColor,
+				bgcolor: backgroundColor,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'right',
+							options: {},
+						},
+					],
+					up: [
+						{
+							actionId: 'stoplr',
 							options: {},
 						},
 					],
@@ -79,7 +142,7 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-home'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Home',
 			style: {
 				text: 'HOME',
@@ -105,10 +168,10 @@ export function getPresetDefinitions(self) {
 	if (seriesActions.ptSpeed) {
 		presets['pan-tilt-speed-up'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Speed Up',
 			style: {
-				text: 'SPEED\\nUP\\n$(Panasonic-Panapod:ptSpeedVar)',
+				text: 'SPEED\\nUP\\n$(Panasonic-Panapod:ptSpeed)',
 				size: '14',
 				color: foregroundColor,
 				bgcolor: backgroundColor,
@@ -129,10 +192,10 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-speed-down'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Speed Down',
 			style: {
-				text: 'SPEED\\nDOWN\\n$(Panasonic-Panapod:ptSpeedVar)',
+				text: 'SPEED\\nDOWN\\n$(Panasonic-Panapod:ptSpeed)',
 				size: '14',
 				color: foregroundColor,
 				bgcolor: backgroundColor,
@@ -153,7 +216,7 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-speed-high'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Speed Set High',
 			style: {
 				text: 'SET\\nSPEED\\nHIGH',
@@ -179,7 +242,7 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-speed-mid'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Speed Set Mid',
 			style: {
 				text: 'SET\\nSPEED\\nMID',
@@ -205,7 +268,7 @@ export function getPresetDefinitions(self) {
 
 		presets['pan-tilt-speed-low'] = {
 			type: 'button',
-			category: 'Up/Down',
+			category: 'Up/Down/Left/Right',
 			name: 'Speed Set Low',
 			style: {
 				text: 'SET\\nSPEED\\nLOW',
@@ -506,6 +569,34 @@ export function getPresetDefinitions(self) {
 		}
 	}
 
+	for (let recall = 0; recall < 10; recall++) {
+		presets[`recall-speed-${recall}`] = {
+			type: 'button',
+			category: 'Recall Preset',
+			name: 'Recall speed ' + parseInt(recall * 10) + '%',
+			style: {
+				text: 'Recall\\nSpeed\\n' + parseInt(recall * 10) + '%',
+				size: '14',
+				color: foregroundColor,
+				bgcolor: backgroundColor,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'recallSpeed',
+							options: {
+								val: (recall * 10).toString(10),
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
+	}
+
 	presets['singleLeg'] = {
 		type: 'button',
 		category: 'Options/Operations',
@@ -554,13 +645,13 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	presets['showMode1'] = {
+	presets['splitLeg'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Show mode 1/3 speed, 30 sec wait',
+		name: 'Split Dual leg',
 		style: {
-			text: 'Show mode\n30s',
-			size: 'auto',
+			text: 'Split\\nLeg',
+			size: '14',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
 		},
@@ -568,10 +659,8 @@ export function getPresetDefinitions(self) {
 			{
 				down: [
 					{
-						actionId: 'showMode',
-						options: {
-							val: '1',
-						},
+						actionId: 'splitDualLeg',
+						options: {},
 					},
 				],
 				up: [],
@@ -580,13 +669,13 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	presets['showMode2'] = {
+	presets['dualLegPancake'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Show mode 1/3 speed, 45 sec wait',
+		name: 'Dual leg + pancake',
 		style: {
-			text: 'Show mode\n45s',
-			size: 'auto',
+			text: 'Dual leg + pancake',
+			size: '14',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
 		},
@@ -594,10 +683,8 @@ export function getPresetDefinitions(self) {
 			{
 				down: [
 					{
-						actionId: 'showMode',
-						options: {
-							val: '2',
-						},
+						actionId: 'dualLegPancake',
+						options: {},
 					},
 				],
 				up: [],
@@ -606,12 +693,12 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	presets['showMode3'] = {
+	presets['demoMode'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Show mode 1/3 speed, 60 sec wait',
+		name: 'Start demo mode',
 		style: {
-			text: 'Show mode\n60s',
+			text: 'Start demo mode',
 			size: 'auto',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
@@ -620,10 +707,8 @@ export function getPresetDefinitions(self) {
 			{
 				down: [
 					{
-						actionId: 'showMode',
-						options: {
-							val: '3',
-						},
+						actionId: 'demoMode',
+						options: {},
 					},
 				],
 				up: [],
@@ -632,12 +717,12 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	presets['showMode0'] = {
+	presets['stopDemoMode'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Stop show mode',
+		name: 'Stop demo mode',
 		style: {
-			text: 'Show mode\nStop',
+			text: 'Stop demo mode',
 			size: 'auto',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
@@ -646,10 +731,8 @@ export function getPresetDefinitions(self) {
 			{
 				down: [
 					{
-						actionId: 'showMode',
-						options: {
-							val: '0',
-						},
+						actionId: 'stopDemoMode',
+						options: {},
 					},
 				],
 				up: [],
@@ -682,12 +765,12 @@ export function getPresetDefinitions(self) {
 		feedbacks: [],
 	}
 
-	presets['stowLegs'] = {
+	presets['calibfeedback'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Store legs at bottom',
+		name: 'Perform calibration (With button feedback)',
 		style: {
-			text: 'Stow legs',
+			text: '$(panapod:calibration)',
 			size: 'auto',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
@@ -696,14 +779,74 @@ export function getPresetDefinitions(self) {
 			{
 				down: [
 					{
-						actionId: 'stowLegs',
+						actionId: 'calib',
 						options: {},
 					},
 				],
 				up: [],
 			},
 		],
-		feedbacks: [],
+		feedbacks: [
+			{
+				feedbackId: 'calibrationstatus',
+				options: {
+					calibrated: combineRgb(0, 255, 0),
+					calibrated_text: combineRgb(0, 0, 0),
+					calibrating: combineRgb(255, 255, 0),
+					calibrating_text: combineRgb(0, 0, 0),
+					uncalibrated: combineRgb(255, 0, 0),
+					uncalibrated_text: combineRgb(0, 0, 0),
+					motor_error: combineRgb(128, 0, 0),
+					error_text: combineRgb(0, 0, 0),
+				},
+			},
+		],
+	}
+
+	presets['autocal'] = {
+		type: 'button',
+		category: 'Options/Operations',
+		name: 'Autocalibrate',
+		style: {
+			text: 'Auto calibrate: $(panapod:autocalibrate)',
+			size: '13',
+			color: foregroundColor,
+			bgcolor: backgroundColor,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'autoCalibrate',
+						options: {
+							val: '1',
+						},
+						delay: 0,
+					},
+				],
+				up: [],
+			},
+			{
+				down: [
+					{
+						actionId: 'autoCalibrate',
+						options: {
+							val: '0',
+						},
+						delay: 0,
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [
+			{
+				feedbackId: 'autocalibrate',
+				style: {
+					bgcolor: 233490,
+				},
+			},
+		],
 	}
 
 	presets['recall-speed-25'] = {

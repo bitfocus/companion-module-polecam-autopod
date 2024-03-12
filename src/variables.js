@@ -7,7 +7,13 @@ export function setVariables() {
 	variables.push({ variableId: 'series', name: 'Camera Series' })
 	variables.push({ variableId: 'model', name: 'Model of camera' })
 	variables.push({ variableId: 'name', name: 'Name of camera' })
-	variables.push({ variableId: 'ptSpeedVar', name: 'Up/Down Speed' })
+	variables.push({ variableId: 'ptSpeed', name: 'Up/Down/Left/Right Speed' })
+	variables.push({ variableId: 'recallSpeed', name: 'Preset recall Speed' })
+	variables.push({ variableId: 'firmware', name: 'Firmware name and version' })
+	variables.push({ variableId: 'calibration', name: 'Calibration status' })
+	variables.push({ variableId: 'panposition', name: 'Pan position' })
+	variables.push({ variableId: 'tiltposition', name: 'Tilt position' })
+	variables.push({ variableId: 'autocalibrate', name: 'Autocalibration status' })
 
 	return variables
 }
@@ -21,6 +27,18 @@ export function checkVariables(self) {
 		model: self.data.model,
 		name: self.data.name,
 		error: self.data.error,
-		ptSpeedVar: self.ptSpeed,
+		ptSpeed: self.ptSpeed,
+		recallSpeed: self.data.recallSpeed,
+		firmware: self.data.firmware,
+		calibration: {
+			uncalibrated: 'Uncalibrated!',
+			calibrating: 'Calibrating...',
+			calibrated: 'Calibrated',
+			motor_error: 'Error!',
+			'N/A': 'N/A',
+		}[self.data.calibration],
+		panposition: self.data.panposition,
+		tiltposition: self.data.tiltposition,
+		autocalibrate: self.data.autocalibrate ? 'On' : 'Off',
 	})
 }

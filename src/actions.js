@@ -27,23 +27,9 @@ for (let i = 0; i < 100; ++i) {
 	CHOICES_SPEED.push({ id: i.toString(10), label: i + '% Speed' })
 }
 
-const CHOICES_SHOW_MODE = [
-	{ id: '0', label: 'Stop show mode', value: '15' },
-	{
-		id: '1',
-		label: 'Show Mode. 1/3 speed. 30 sec wait at top & bottom',
-		value: '14',
-	},
-	{
-		id: '2',
-		label: 'Show Mode. 1/3 speed. 45 sec wait at top & bottom',
-		value: '16',
-	},
-	{
-		id: '3',
-		label: 'Show Mode. 1/3 speed. 60 sec wait at top & bottom',
-		value: '17',
-	},
+const CHOICES_ON_OFF = [
+	{ id: '0', label: 'Off' },
+	{ id: '1', label: 'On' },
 ]
 
 // ######################
@@ -65,6 +51,24 @@ export async function sendPTZ(self, str) {
 	}
 }
 
+export async function sendPanTilt(self) {
+	const pan = 50 + self.panning * parseInt(self.ptSpeed)
+	const tilt = 50 + self.tilting * parseInt(self.ptSpeed)
+
+	const str = 'PTS' + ('00' + pan).substr(-2) + ('00' + tilt).substr(-2)
+
+	const url = `http://${self.config.host}:${self.config.httpPort}/cgi-bin/aw_ptz?cmd=%23${str}&res=1`
+	if (self.config.debug) {
+		self.log('debug', `Sending : ${url}`)
+	}
+
+	try {
+		await got.get(url)
+	} catch (err) {
+		throw new Error(`Action failed: ${url}`)
+	}
+}
+
 // ##########################
 // #### Instance Actions ####
 // ##########################
@@ -81,33 +85,61 @@ export function getActionDefinitions(self) {
 
 	if (seriesActions.panTilt) {
 		actions.up = {
-			name: 'Up/Down - Up',
+			name: 'Up',
 			options: [],
 			callback: async (action) => {
-				await sendPTZ(self, 'PTS50' + parseInt(50 + self.ptSpeed))
+				self.tilting = 1
+				await sendPanTilt(self)
 			},
 		}
 
 		actions.down = {
-			name: 'Up/Down - Down',
+			name: 'Down',
 			options: [],
 			callback: async (action) => {
-				const n = parseInt(50 - self.ptSpeed)
-				const string = '' + (n < 10 ? '0' + n : n)
-				await sendPTZ(self, 'PTS50' + string)
+				self.tilting = -1
+				await sendPanTilt(self)
 			},
 		}
 
-		actions.stop = {
-			name: 'Up/Down - Stop',
+		actions.left = {
+			name: 'Left',
 			options: [],
 			callback: async (action) => {
-				await sendPTZ(self, 'PTS5050')
+				self.panning = 1
+				await sendPanTilt(self)
+			},
+		}
+
+		actions.right = {
+			name: 'Right',
+			options: [],
+			callback: async (action) => {
+				self.panning = -1
+				await sendPanTilt(self)
+			},
+		}
+
+		actions.stopud = {
+			name: 'Stop Up/Down',
+			options: [],
+			callback: async (action) => {
+				self.tilting = 0
+				await sendPanTilt(self)
+			},
+		}
+
+		actions.stoplr = {
+			name: 'Stop Left/Right',
+			options: [],
+			callback: async (action) => {
+				self.panning = 0
+				await sendPanTilt(self)
 			},
 		}
 
 		actions.home = {
-			name: 'Up/Down - Home',
+			name: 'Up/Down/Left/Right - Home',
 			options: [],
 			callback: async (action) => {
 				await sendPTZ(self, 'APC7FFF7FFF')
@@ -117,7 +149,7 @@ export function getActionDefinitions(self) {
 
 	if (seriesActions.ptSpeed) {
 		actions.ptSpeedS = {
-			name: 'Up/Down - Speed',
+			name: 'Up/Down/Left/Right - Speed',
 			options: [
 				{
 					type: 'dropdown',
@@ -136,14 +168,14 @@ export function getActionDefinitions(self) {
 				}
 
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
+				self.setVariableValues({ ptSpeed: self.ptSpeed })
 			},
 		}
 	}
 
 	if (seriesActions.ptSpeed) {
 		actions.ptSpeedU = {
-			name: 'Up/Down - Speed Up',
+			name: 'Up/Down/Left/Right - Speed Up',
 			options: [],
 			callback: async (action) => {
 				if (self.ptSpeedIndex == 0) {
@@ -152,14 +184,14 @@ export function getActionDefinitions(self) {
 					self.ptSpeedIndex--
 				}
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
+				self.setVariableValues({ ptSpeed: self.ptSpeed })
 			},
 		}
 	}
 
 	if (seriesActions.ptSpeed) {
 		actions.ptSpeedD = {
-			name: 'Up/Down - Speed Down',
+			name: 'Up/Down/Left/Right - Speed Down',
 			options: [],
 			callback: async (action) => {
 				if (self.ptSpeedIndex == c.CHOICES_SPEED.length) {
@@ -168,7 +200,7 @@ export function getActionDefinitions(self) {
 					self.ptSpeedIndex++
 				}
 				self.ptSpeed = c.CHOICES_SPEED[self.ptSpeedIndex].id
-				self.setVariableValues({ ptSpeedVar: self.ptSpeed })
+				self.setVariableValues({ ptSpeed: self.ptSpeed })
 			},
 		}
 	}
@@ -211,6 +243,14 @@ export function getActionDefinitions(self) {
 		}
 	}
 
+	actions.splitDualLeg = {
+		name: 'Split Dual Leg',
+		options: [],
+		callback: async (action) => {
+			await sendPTZ(self, 'R10')
+		},
+	}
+
 	actions.singleLeg = {
 		name: 'Single Leg',
 		options: [],
@@ -227,22 +267,49 @@ export function getActionDefinitions(self) {
 		},
 	}
 
-	actions.showMode = {
-		name: 'Show Mode',
+	actions.dualLegPancake = {
+		name: 'Dual Leg + pancake',
+		options: [],
+		callback: async (action) => {
+			await sendPTZ(self, 'R16')
+		},
+	}
+
+	actions.autoCalibrate = {
+		name: 'Set autocalibration',
 		options: [
 			{
 				type: 'dropdown',
-				label: 'Show Mode',
+				label: 'Auto calibration',
 				id: 'val',
-				default: CHOICES_SHOW_MODE[0].id,
-				choices: CHOICES_SHOW_MODE,
+				default: CHOICES_ON_OFF[0].id,
+				choices: CHOICES_ON_OFF,
 			},
 		],
 		callback: async (action) => {
-			const val = CHOICES_SHOW_MODE.find((choice) => choice.id === action.options.val)
-			if (val) {
-				await sendPTZ(self, 'R' + val.value)
+			if (action.options.val === '1') {
+				await sendPTZ(self, 'D11')
+				await self.getAutoCalibrate()
+			} else {
+				await sendPTZ(self, 'D10')
+				await self.getAutoCalibrate()
 			}
+		},
+	}
+
+	actions.demoMode = {
+		name: 'Start Demo Mode',
+		options: [],
+		callback: async (action) => {
+			await sendPTZ(self, 'R14')
+		},
+	}
+
+	actions.stopDemoMode = {
+		name: 'Stop Demo Mode',
+		options: [],
+		callback: async (action) => {
+			await sendPTZ(self, 'R15')
 		},
 	}
 
@@ -254,8 +321,8 @@ export function getActionDefinitions(self) {
 		},
 	}
 
-	actions.stowLegs = {
-		name: 'Perform calibration',
+	actions.reboot = {
+		name: 'Reboot device',
 		options: [],
 		callback: async (action) => {
 			await sendPTZ(self, 'R19')
@@ -274,12 +341,16 @@ export function getActionDefinitions(self) {
 			},
 		],
 		callback: async (action) => {
-			let val = Math.round((4096 / 100) * parseInt(action.options.val, 10))
-			if (val === 4096) {
+			let val = 0x555 + Math.round((0xaaa / 100) * parseInt(action.options.val, 10))
+			if (val >= 4096) {
 				val = 4095
 			}
+			if (val < 0x555) {
+				val = 0x555
+			}
 
-			await sendPTZ(self, 'AXI' + ('00' + val.toString(16)).substr(-3).toUpperCase())
+			await sendPTZ(self, 'AXI' + val.toString(16).toUpperCase())
+			self.getPresetSpeed()
 		},
 	}
 
