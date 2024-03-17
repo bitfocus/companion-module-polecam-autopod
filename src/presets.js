@@ -171,7 +171,7 @@ export function getPresetDefinitions(self) {
 			category: 'Up/Down/Left/Right',
 			name: 'Speed Up',
 			style: {
-				text: 'SPEED\\nUP\\n$(Panasonic-Panapod:ptSpeed)',
+				text: 'SPEED\\nUP\\n$(autopod:ptSpeed)',
 				size: '14',
 				color: foregroundColor,
 				bgcolor: backgroundColor,
@@ -195,7 +195,7 @@ export function getPresetDefinitions(self) {
 			category: 'Up/Down/Left/Right',
 			name: 'Speed Down',
 			style: {
-				text: 'SPEED\\nDOWN\\n$(Panasonic-Panapod:ptSpeed)',
+				text: 'SPEED\\nDOWN\\n$(autopod:ptSpeed)',
 				size: '14',
 				color: foregroundColor,
 				bgcolor: backgroundColor,
@@ -770,7 +770,7 @@ export function getPresetDefinitions(self) {
 		category: 'Options/Operations',
 		name: 'Perform calibration (With button feedback)',
 		style: {
-			text: '$(panapod:calibration)',
+			text: '$(autopod:calibration)',
 			size: 'auto',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
@@ -808,7 +808,7 @@ export function getPresetDefinitions(self) {
 		category: 'Options/Operations',
 		name: 'Autocalibrate',
 		style: {
-			text: 'Auto calibrate: $(panapod:autocalibrate)',
+			text: 'Auto calibrate: $(autopod:autocalibrate)',
 			size: '13',
 			color: foregroundColor,
 			bgcolor: backgroundColor,

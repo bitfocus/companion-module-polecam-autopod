@@ -1,6 +1,6 @@
-## Panasonic Panapod Elevation unit
+## Polecam Autopod+ Elevation unit
 
-This module can control the [Panasonic Panapod by Polecam](https://eu.connect.panasonic.com/dk/en/products/broadcast-proav/panapod)
+This module can control the [Polecam Autopod+](https://www.polecam.com/autopod-plus) and [Panasonic Panapod by Polecam](https://eu.connect.panasonic.com/dk/en/products/broadcast-proav/panapod)
 
 ## Actions
 
@@ -10,6 +10,7 @@ It's recommended to use the presets for ease of setup.
 **Up/Down**
 
 - Up, Down, Home position
+- Left, Right (Leg 2 in Dual split mode, or pancake)
 - Speed High/Mid/Low
 - Speed Up/Down
 
@@ -22,16 +23,19 @@ It's recommended to use the presets for ease of setup.
 **Options/Operations**
 
 - Single leg
-- Dial leg
-- Show mode 30s/45s/60s
+- Dual leg
+- Dual Split leg
+- Dual leg + pancake
+- Demo mode
 - Show mode stop
 - Calibrate
-- Stow legs
+- Autocalibrate on/off
+- Reboot
 
 ## NOTE!
 
-If the module connects successfully, but the Panapod seems unresponsive to your commands, first check that you have run the Calibration command after the Panapod was turned on. If it does not respond to the Calibration command, you might have very old firmware on your Panapod. Please contact Panasonic for a firmware update.
+If the module connects successfully, but the Panapod seems unresponsive to your commands, first check that you have run the Calibration command after the Panapod was turned on. If it does not respond to the Calibration command, you might have very old firmware on your device. Please contact Polecam for a firmware update.
 
 ## Other
 
-For additional actions, please raise a feature request on [GitHub](https://github.com/bitfocus/companion-module-panasonic-panapod/).
+For additional actions, please raise a feature request on [GitHub](https://github.com/bitfocus/companion-module-polecam-autopod/).

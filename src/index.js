@@ -15,7 +15,7 @@ class PanapodPTZInstance extends InstanceBase {
 		console.log('GetUpgradeScripts-panapod')
 		return [
 			(context, props) => {
-				// From panasonic-panapod to polecam-panapod
+				// From panasonic-panapod to polecam-autopod
 				return {
 					updatedConfig: props.config,
 					updatedActions: props.actions.filter((action) => {

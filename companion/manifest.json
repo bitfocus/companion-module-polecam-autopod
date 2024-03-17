@@ -1,12 +1,12 @@
 {
-	"id": "polecam-panapod",
-	"name": "polecam-panapod",
-	"shortname": "panapod",
-	"description": "Companion module for Polecam Panapod/Autopod+ elevation unit",
+	"id": "polecam-autopod",
+	"name": "polecam-autopod",
+	"shortname": "autopodplus",
+	"description": "Companion module for Polecam Autopod+/Panapod elevation unit",
 	"version": "1.0.1",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-polecam-panapod.git",
-	"bugs": "https://github.com/bitfocus/companion-module-polecam-panapod/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-polecam-autopod.git",
+	"bugs": "https://github.com/bitfocus/companion-module-polecam-autopod/issues",
 	"maintainers": [
 		{
 			"name": "Håkon Nessjøen",
@@ -21,6 +21,6 @@
 		"entrypoint": "../src/index.js"
 	},
 	"manufacturer": "Polecam",
-	"products": ["Panapod", "Autopod+"],
-	"keywords": ["panapod", "camera", "elevation", "motor"]
+	"products": ["Autopod+", "Panapod"],
+	"keywords": ["camera", "elevation", "motor"]
 }

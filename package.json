@@ -1,5 +1,5 @@
 {
-	"name": "polecam-panapod",
+	"name": "polecam-autopod",
 	"version": "1.0.1",
 	"main": "src/index.js",
 	"type": "module",
@@ -10,7 +10,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-polecam-panapod.git"
+		"url": "git+https://github.com/bitfocus/companion-module-polecam-autopod.git"
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.4",
