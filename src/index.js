@@ -5,11 +5,39 @@ import { getPresetDefinitions } from './presets.js'
 import { setVariables, checkVariables } from './variables.js'
 import { ConfigFields } from './config.js'
 import got from 'got'
+import fs from 'fs/promises'
 
 // ########################
 // #### Instance setup ####
 // ########################
-class PanasonicPTZInstance extends InstanceBase {
+class PanapodPTZInstance extends InstanceBase {
+	static GetUpgradeScripts() {
+		console.log('GetUpgradeScripts-panapod')
+		return [
+			(context, props) => {
+				// From panasonic-panapod to polecam-panapod
+				return {
+					updatedConfig: props.config,
+					updatedActions: props.actions.filter((action) => {
+						if (action.actionId === 'stowLegs') {
+							return false
+						}
+						return true
+					}).map((action) => {
+						if (action.actionId === 'stop') {
+							return { ...action, actionId: 'stopud' }
+						}
+						if (action.actionId === 'showMode') {
+							return { ...action, actionId: action.options.val === '0' ? 'stopDemoMode' : 'demoMode', options: {} }
+						}
+						return action
+					}),
+					updatedFeedbacks: [],
+				}
+			},
+		]
+	}
+
 	async getCameraInformation() {
 		if (this.config.host) {
 			const url = `http://${this.config.host}:${this.config.httpPort}/live/camdata.html`
@@ -331,4 +359,4 @@ class PanasonicPTZInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(PanasonicPTZInstance, [])
+runEntrypoint(PanapodPTZInstance, PanapodPTZInstance.GetUpgradeScripts())

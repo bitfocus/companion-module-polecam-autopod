@@ -1,26 +1,26 @@
 {
-	"id": "panasonic-panapod",
-	"name": "panasonic-panapod",
+	"id": "polecam-panapod",
+	"name": "polecam-panapod",
 	"shortname": "panapod",
-	"description": "Companion module for Panasonic Panapod elevation unit",
+	"description": "Companion module for Polecam Panapod/Autopod+ elevation unit",
 	"version": "1.0.1",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-panasonic-panapod.git",
-	"bugs": "https://github.com/bitfocus/companion-module-panasonic-panapod/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-polecam-panapod.git",
+	"bugs": "https://github.com/bitfocus/companion-module-polecam-panapod/issues",
 	"maintainers": [
 		{
 			"name": "Håkon Nessjøen",
 			"email": "haakon@bitfocus.io"
 		}
 	],
-	"legacyIds": [],
+	"legacyIds": ["panasonic-panapod"],
 	"runtime": {
 		"type": "node18",
 		"api": "nodejs-ipc",
 		"apiVersion": "0.0.0",
 		"entrypoint": "../src/index.js"
 	},
-	"manufacturer": "Panasonic",
-	"products": ["Panapod"],
+	"manufacturer": "Polecam",
+	"products": ["Panapod", "Autopod+"],
 	"keywords": ["panapod", "camera", "elevation", "motor"]
 }
