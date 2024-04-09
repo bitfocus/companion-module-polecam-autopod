@@ -268,7 +268,7 @@ export function getActionDefinitions(self) {
 	}
 
 	actions.dualLegPancake = {
-		name: 'Dual Leg + pancake',
+		name: 'Pancake',
 		options: [],
 		callback: async (action) => {
 			await sendPTZ(self, 'R16')

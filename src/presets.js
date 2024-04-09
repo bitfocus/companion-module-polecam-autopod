@@ -672,9 +672,9 @@ export function getPresetDefinitions(self) {
 	presets['dualLegPancake'] = {
 		type: 'button',
 		category: 'Options/Operations',
-		name: 'Dual leg + pancake',
+		name: 'Pancake',
 		style: {
-			text: 'Dual leg + pancake',
+			text: 'Pancake',
 			size: '14',
 			color: foregroundColor,
 			bgcolor: backgroundColor,
