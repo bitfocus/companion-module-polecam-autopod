@@ -79,7 +79,7 @@ class PanapodPTZInstance extends InstanceBase {
 				if (this.connected) {
 					this.log('error', 'ERROR getting updated info', err)
 					this.connected = false
-					this.updateStatus(InstanceStatus.Error, 'Error getting updated info')
+					this.updateStatus(InstanceStatus.UnknownError, 'Error getting updated info')
 				}
 				return false
 			}
