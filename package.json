@@ -13,11 +13,11 @@
 		"url": "git+https://github.com/bitfocus/companion-module-polecam-autopod.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.4",
-		"got": "^12.5.3"
+		"@companion-module/base": "~1.15.0",
+		"got": "^16.0.0"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.8.0",
+		"@companion-module/tools": "^2.9.0",
 		"prettier": "^3.0.2"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json"
